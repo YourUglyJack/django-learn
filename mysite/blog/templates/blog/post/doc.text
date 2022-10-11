@@ -1,0 +1,26 @@
+
+<!--Remember that you are building the URL dynamically using the {% url %} template
+tag provided by Django. You are using the namespace called blog and the URL
+named post_share, and you are passing the post ID as a parameter to build the
+absolute URL.-->
+
+    <p>
+        <a href="{% url "blog:post_share" post.id %}">
+            Share this post
+        </a>
+    </p>
+
+
+    {% else %}
+        <h1>Share "{{ post.title }}" by e-mail</h1>
+        <form method="post">
+            {{ form.as_p }}
+            <!--
+            By default, Django checks for the CSRF token in all POST requests.
+            Remember to include the csrf_token tag in all forms that are
+            submitted via POST
+            -->
+            {% csrf_token %}
+            <input type="submit" value="Send e-mail">
+        </form>
+    {% endif %}
