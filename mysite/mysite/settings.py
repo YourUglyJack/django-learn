@@ -119,7 +119,16 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# email
+# 想要模拟发邮件就: 在命令窗口执行 python manage.py shell 然后 导入 send_mail 这个函数 然后 就执行下面这句
+# send_mail('Django mail', 'This e-mail was sent with Django.', 'leety589589@163.com', ['1091349400@qq.com'],
+#           fail_silently=False)
+# 成功发送的话会在控制台看到 1
+# 2022.10.12 还是发不出去
+# 2022.10.12 17：30 更新！！！
+# 下面这一行一定要注释掉，因为用了smtp server !!!!! 如果有下面这一行的话就是将邮件输入到shell  没啥用 发不出去好像
+# 曹 这个真的试了好久，，，，，，，
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_HOST_USER = 'leety589589@163.com'
 EMAIL_HOST_PASSWORD = ''

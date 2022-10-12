@@ -51,34 +51,34 @@ def post_share(req, post_id):
     # retrieve post by id
     post = get_object_or_404(Post, id=post_id, status='published')
     send = False
-    if req.method == 'Post':
+    if req.method == 'POST':  # 错误的：if req.method == 'Post'  要大写！！！POST！！！
         # form was submitted
-        form = EmailPostForm(req.Post)
+        form = EmailPostForm(req.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            post_url = req.build_abosolut_url(post.get_absolute_url())
-            subject = f"{cd['name']} recommends you read" \
+            post_url = req.build_absolute_uri(post.get_absolute_url())  # 是uri！！！而不是url....
+            subject = f"Django Test: {cd['name']} recommends you read " \
                       f"{post.title}"
             message = f"Read {post.title} at {post_url} \n\n" \
                       f"{cd['name']}\'s comments:{cd['comments']}"
-            send_mail(subject, message, 'leety589589@163.com', [cd['to']])
+            send_status = send_mail(subject, message, 'leety589589@163.com', [cd['to']], fail_silently=False)
+            print('send_status', send_status)
         send = True
     else:
         form = EmailPostForm()
-    print('send',send)
     return render(req, 'blog/post/share.html', {'post': post, 'form': form, 'send': send})
 
 
-def send_email(req):
-    # 目前好像没啥用
-    send_mail(
-        subject='Title',
-        message='This is a text from django',
-        from_email='leety589589@163.com',
-        recipient_list=['1091349400@qq.com'],
-        fail_silently=False
-    )
-    return HttpResponse('Ok')
+# def send_email(req):
+#     # 目前好像没啥用
+#     send_mail(
+#         subject='Title',
+#         message='This is a text from django',
+#         from_email='leety589589@163.com',
+#         recipient_list=['1091349400@qq.com'],
+#         fail_silently=False
+#     )
+#     return HttpResponse('Ok')
 
 
 class PostListView(ListView):
