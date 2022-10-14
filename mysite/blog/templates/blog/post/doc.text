@@ -24,3 +24,7 @@ absolute URL.-->
             <input type="submit" value="Send e-mail">
         </form>
     {% endif %}
+
+
+The {% with %} template tag is useful for avoiding hitting the
+database or accessing expensive methods multiple times
