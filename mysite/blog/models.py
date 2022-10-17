@@ -2,6 +2,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
+from taggit.managers import TaggableManager
 
 
 # Create your models here.
@@ -27,6 +28,7 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)  # 会在model对象第一次被创建时，将字段的值设置为创建时的时间，以后修改对象时，字段的值不会再更新
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    tags = TaggableManager()
 
     # manager
     objects = models.Manager()  # the default manager

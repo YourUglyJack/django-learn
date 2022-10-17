@@ -5,6 +5,7 @@ from django.views.generic import ListView
 from django.core.mail import send_mail
 from .forms import EmailPostForm, CommentForm
 from .models import Post
+from taggit.models import Tag
 
 
 # Create your views here.
@@ -12,8 +13,14 @@ from .models import Post
 # def post_list(req):
 #     posts = Post.published.all()
 #     return render(req, 'blog/post/list.html', {'posts': posts})
-def post_list(req):
+def post_list(req, tag_slug=None):
     object_list = Post.published.all()
+    tag = None
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        object_list = object_list.filter(tags__in=[tag])
+
     # 3 posts in each page
     paginator = Paginator(object_list, 3)
     page = req.GET.get('page')
@@ -25,7 +32,7 @@ def post_list(req):
     except EmptyPage:
         # if page is out of range
         posts = paginator.page(paginator.num_pages)
-    return render(req, 'blog/post/list.html', {'page': page, 'posts': posts})
+    return render(req, 'blog/post/list.html', {'page': page, 'posts': posts, 'tag': tag})
 
 
 def post_deatil(req, year, month, day, post):
